@@ -10,4 +10,4 @@ struct UserData {
     double balance;
 };
 
-#endif //ENCODINGPASSWORD_USER_DATA_H
+#endif //ENCODINGPASSWORD_USERS_DATA_H
