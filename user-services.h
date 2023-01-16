@@ -180,10 +180,21 @@ unsigned Hashing(string password)
 
 string intToString(int n)
 {
-	
+	string str = to_string(n);
+	return str;
 }
+
 void login(string username, string password) {
-	
+	unsigned hashP = Hashing(password);
+	string hashedPassword = intToString(hashP);
+	for (UserData& user : users)
+	{
+		if (user.username == username && user.password == hashedPassword)
+		{
+			isLogged = true;
+			loggedUser = user;
+		}
+	}
 }
 
 bool existsByUsername(string username) {
