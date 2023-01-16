@@ -97,11 +97,86 @@ bool validateUsername(string name) {
 	}
 	return true;
 }
-unsigned Hashing(string password)
-{
-	
+bool isSmallLetter(char symbol) {
+	return (symbol >= 97 && symbol <= 122);
+}
+bool isBigLetter(char symbol) {
+	return (symbol >= 65 && symbol <= 90);
+}
+bool isDigit(char number) {
+	return number >= 48 && number <= 57;
+}
+bool isApprovedSymbol(char symbol) {
+	int index = 0;
+	while (approvedSymbols[index] != '\0')
+	{
+		if (approvedSymbols[index] == symbol)
+		{
+			return true;
+		}
+		index++;
+	}
+	return false;
 }
 
+bool isSmallLetter(char symbol) {
+	return (symbol >= 97 && symbol <= 122);
+}
+
+bool isBigLetter(char symbol) {
+	return (symbol >= 65 && symbol <= 90);
+}
+
+bool isDigit(char number) {
+	return number >= 48 && number <= 57;
+}
+
+bool isApprovedSymbol(char symbol) {
+	int index = 0;
+	while (approvedSymbols[index] != '\0')
+	{
+		if (approvedSymbols[index] == symbol)
+		{
+			return true;
+		}
+		index++;
+	}
+	return false;
+}
+
+bool validatePassword(string pass) {
+	int index = 0;
+	int countSmallLet = 0;
+	int countBigLet = 0;
+	int countSymbols = 0;
+	int countDigits = 0;
+	while (pass[index] != '\0')
+	{
+		if (isBigLetter(pass[index])) {
+			countBigLet++;
+		}
+		else if (isSmallLetter(pass[index])) {
+			countSmallLet++;
+		}
+		else if (isApprovedSymbol(pass[index])) {
+			countSymbols++;
+		}
+		else if (isDigit(pass[index])) {
+			countDigits++;
+		}
+		else {
+			return false;
+		}
+		index++;
+	}
+	return index > 4 && countSmallLet > 0 && countBigLet > 0 && countSymbols > 0 && countDigits > 0;
+}
+
+unsigned Hashing(string password)
+{
+	size_t hash = std::hash<std::string>{}(password);
+	return hash;
+}
 
 string intToString(int n)
 {
