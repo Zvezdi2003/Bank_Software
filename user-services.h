@@ -263,6 +263,8 @@ void withdraw(double amount) {
 				cout << "Invalid withdraw amount" << endl;
 				return;
 			}
+		}
+	}
 }
 
 bool saveState() {
