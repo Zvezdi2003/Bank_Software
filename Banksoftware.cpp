@@ -68,7 +68,10 @@ int main() {
 			cancelAccount();
 		}
 		else if (command == DEPOSIT_COMMAND) {
-			
+			double amountOFMoney = 0.0;
+			cout << "Please, enter how much money you want to deposit: ";
+			cin >> amountOFMoney;
+			deposit(amountOFMoney);
 		}
 		else if (command == TRANSFER_COMMAND) {
 			
