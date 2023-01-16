@@ -65,18 +65,15 @@ int main() {
 			isLogged = false;
 		}
 		else if (command == CANCEL_COMMAND) {
+			cancelAccount();
+		}
+		else if (command == DEPOSIT_COMMAND) {
 			
 		}
-		else if (command == DEPOSIT_COMMAND)
-		{
+		else if (command == TRANSFER_COMMAND) {
 			
 		}
-		else if (command == TRANSFER_COMMAND)
-		{
-			
-		}
-		else if (command == WITHDRAW_COMMAND)
-		{
+		else if (command == WITHDRAW_COMMAND) {
 			
 		}
 	}
