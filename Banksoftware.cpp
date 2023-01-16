@@ -56,7 +56,13 @@ int main() {
 			}
 		}
 		else if (command == REGISTER_COMMAND) {
-			
+			string username, password;
+			cout << "Please, enter your username(only latin letters and symbols): ";
+			cin >> username;
+			cout << "Please, enter your password(only latin letters, numbers and symbols(!@#$%^&*), at least 5 symbols): ";
+			cin >> password;
+			cout << create(username, password) << endl;
+			isLogged = false;
 		}
 		else if (command == CANCEL_COMMAND) {
 			
