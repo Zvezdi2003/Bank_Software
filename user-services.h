@@ -16,29 +16,38 @@ vector<UserData> users;
 bool isLogged = false;
 UserData loggedUser;
 
-
+int numbersAfterComma(string str) {
+	bool comma = false;
+	int counter = 0;
+	for (int i = 0; str[i] != '\0'; i++) {
+		if (comma) {
+			counter++;
+		}
+		if (str[i] == ',' || str[i] == '.') {
+			comma = true;
+		}
+	}
+	return  counter;
+}
 double stringToDouble(string str)
 {
-	double result = 0.0;
-	int index = 0;
-	for (int i = 0; i != '\0'; i++)
-	{
-		if (str[i] == '.' || str[i] == ',')
-		{
-			index = i;
-			break;
-		}
+	double number = 0;
 
-		result *= 10;
-		result += (double)(str[i] - '0');
+	for (int i = 0; str[i] != '\0'; i++) {
+		if (str[i] == '.' || str[i] == ',') {
+			continue;
+		}
+		number = number * 10 + (str[i] - '0') * 10;
 	}
-	int power = 1;
-	for (int i = index + 1; i != '\0'; i++)
-	{
-		result += (double)((str[i] - '0') / pow(10, power));
-		power++;
+	int digitsAfterComa = numbersAfterComma(str);
+	digitsAfterComa++;
+
+	while (digitsAfterComa > 0) {
+		number /= 10;
+		digitsAfterComa--;
 	}
-	return result;
+
+	return number;
 
 }
 void loadUsers() {
@@ -50,9 +59,11 @@ void loadUsers() {
 	}
 
 	string current;
-	while (!file.eof())
+	getline(file, current, ':');
+	
+	while (current != "\n" && !file.eof())
 	{
-		getline(file, current, ':');
+
 		UserData user;
 
 		user.username = current;
@@ -64,11 +75,13 @@ void loadUsers() {
 		user.balance = stringToDouble(current);
 
 		users.push_back(user);
+
+		getline(file, current, ':');
 	}
 }
 bool validateUsername(string name) {
 	int index = 0;
-	while (name[index++] != '\0')
+	while (name[index] != '\0')
 	{
 		if (name[index] < 32 && name[index] > 126)
 		{
@@ -78,6 +91,7 @@ bool validateUsername(string name) {
 		{
 			return false;
 		}
+		index++;
 	}
 	return true;
 }
@@ -178,7 +192,6 @@ string create(string username, string password) {
 	isLogged = true;
 	loggedUser = user;
 
-
 	return REGISTERED_SUCCESSFULLY_MESSAGE;
 }
 
@@ -203,51 +216,53 @@ void cancelAccount() {
 }
 
 void deposit(double& amount) {
-
-	if (amount > 0)
-	{
-		loggedUser.balance += amount;
+	for (auto& x : users) {
+		if (x.username == loggedUser.username) {
+			if (amount > DBL_EPSILON)
+			{
+				loggedUser.balance += amount;
+				x.balance += amount;
+			}
+			else
+			{
+				cout << "Invalid deposit amount" << endl;
+				return;
+			}
+			return;
+		}
 	}
-	else
-	{
-		cout << "Invalid amount" << endl;
-		return;
-	}
-
 }
 
 void transfer(string username, double amount) {
-	if (amount > 0 && amount <= 10000 && loggedUser.balance >= amount)
-	{
-		cout << "Please enter the right name of the account to which you want to transfer: ";
-		string nameSecond = "";
-		cin >> nameSecond;
-		if (existsByUsername(nameSecond))
-		{
-			loggedUser.balance -= amount;
-			vector<UserData>::iterator iter;
-			for (iter = users.begin(); iter != users.end(); iter++) {
-				if ((*iter).username == loggedUser.username) {
-
-				}
+	for (auto& x : users) {
+		if (username == x.username) {
+			if (amount > DBL_EPSILON && abs(amount - 10000) >= DBL_EPSILON && abs(loggedUser.balance - amount) >= DBL_EPSILON)
+			{
+				loggedUser.balance -= amount;
+				x.balance += amount;
+				cout << "The transfer is made successfully!" << '\n';
+				return;
 			}
 		}
 	}
+
+	cout << "User not found" << '\n';
 }
 
 void withdraw(double amount) {
-	if (loggedUser.balance >= amount)
-	{
-		if (amount > 0 && amount <= 10000)
-		{
-			loggedUser.balance -= amount;
-		}
-	}
-	else
-	{
-		cout << "Invalid amount" << endl;
-		return;
-	}
+	
+	for (auto& x : users) {
+		if (x.username == loggedUser.username) {
+			if ((loggedUser.balance - amount) >= DBL_EPSILON)
+			{
+				loggedUser.balance -= amount;
+				x.balance -= amount;
+			}
+			else
+			{
+			cout << "Invalid withdraw amount" << endl;
+			return;
+			}
 }
 
 bool saveState() {
