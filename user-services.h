@@ -81,14 +81,28 @@ void loadUsers() {
 	}
 }
 
+bool validateUsername(string name) {
+	int index = 0;
+	while (name[index] != '\0')
+	{
+		if (name[index] < 32 && name[index] > 126)
+		{
+			return false;
+		}
+		if (name[index] >= '0' && name[index] <= '9')
+		{
+			return false;
+		}
+		index++;
+	}
+	return true;
+}
 unsigned Hashing(string password)
 {
 	
 }
 
-bool existsByUsername(string username) {
-	
-}
+
 string intToString(int n)
 {
 	
@@ -97,6 +111,9 @@ void login(string username, string password) {
 	
 }
 
+bool existsByUsername(string username) {
+	
+}
 string create(string username, string password) {
 
 }
