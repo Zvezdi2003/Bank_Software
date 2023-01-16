@@ -226,10 +226,23 @@ string create(string username, string password) {
 }
 
 void logout() {
-
+	loggedUser = { "", "", 0 };
+	isLogged = false;
 }
 void cancelAccount() {
-
+	string password;
+	cin >> password;
+	if (isLogged && loggedUser.balance == 0)
+	{
+		vector<UserData>::iterator iter;
+		for (iter = users.begin(); iter != users.end(); iter++) {
+			if ((*iter).username == loggedUser.username) {
+				users.erase(iter);
+				break;
+			}
+		}
+	}
+	logout();
 }
 
 void deposit(double& amount) {
