@@ -38,7 +38,22 @@ int main() {
 		cin >> command;
 
 		if (command == LOGIN_COMMAND) {
+			if (isLogged) {
+				isLogged = false;
+				continue;
+			}
 			
+			string username, password;
+			
+			cout << "Please, enter your username(only latin letters and symbols): ";
+			cin >> username;
+			cout << "Please, enter your password(only latin letters, numbers and symbols(!@#$%^&*), at least 5 symbols): ";
+			cin >> password;
+			
+			login(username, password);
+			if (!isLogged) {
+				cout << "Invalid username or password." << endl;
+			}
 		}
 		else if (command == REGISTER_COMMAND) {
 			
