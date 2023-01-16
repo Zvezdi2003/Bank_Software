@@ -246,7 +246,21 @@ void cancelAccount() {
 }
 
 void deposit(double& amount) {
-
+	for (auto& x : users) {
+		if (x.username == loggedUser.username) {
+			if (amount > DBL_EPSILON)
+			{
+				loggedUser.balance += amount;
+				x.balance += amount;
+			}
+			else
+			{
+				cout << "Invalid amount" << endl;
+				return;
+			}
+			return;
+		}
+	}
 }
 
 void transfer(string username, double amount) {
