@@ -253,7 +253,7 @@ void withdraw(double amount) {
 	
 	for (auto& x : users) {
 		if (x.username == loggedUser.username) {
-			if (abs(loggedUser.balance - amount) >= DBL_EPSILON)
+			if (abs(loggedUser.balance - amount) >= DBL_EPSILON && amount <= 10000)
 			{
 				loggedUser.balance -= amount;
 				x.balance -= amount;
