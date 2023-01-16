@@ -27,7 +27,7 @@ int main() {
 	string command = "";
 	while (command != QUIT_COMMAND) {
 		if (isLogged) {
-			cout << "You have " << setprecision(5) << loggedUser.balance << " BGN.Choose one of the following options: " << endl;
+			cout << "You have " << fixed << setprecision(2) << loggedUser.balance << " BGN.Choose one of the following options: " << endl;
 			LoggedMenu();
 		}
 		else {
@@ -37,6 +37,10 @@ int main() {
 		cin >> command;
 
 		if (command == LOGIN_COMMAND) {
+			if (isLogged) {
+				isLogged = false;
+				continue;
+			}
 			string username, password;
 			cout << "Please, enter your username(only latin letters and symbols): ";
 			cin >> username;
@@ -54,6 +58,7 @@ int main() {
 			cout << "Please, enter your password(only latin letters, numbers and symbols(!@#$%^&*), at least 5 symbols): ";
 			cin >> password;
 			cout << create(username, password) << endl;
+			isLogged = false;
 		}
 		else if (command == CANCEL_COMMAND) {
 			cancelAccount();
@@ -64,6 +69,16 @@ int main() {
 			cout << "Please, enter how much money you want to deposit: ";
 			cin >> amountOFMoney;
 			deposit(amountOFMoney);
+		}
+		else if (command == TRANSFER_COMMAND)
+		{
+			string user;
+			cout << "Enter username: ";
+			cin >> user;
+			double depositSum;
+			cout << "Enter how much money you would like to transfer: ";
+			cin >> depositSum;
+			transfer(user, depositSum);
 		}
 		else if (command == WITHDRAW_COMMAND)
 		{
