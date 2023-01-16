@@ -198,10 +198,31 @@ void login(string username, string password) {
 }
 
 bool existsByUsername(string username) {
-	
+	for (UserData& user : users) {
+		if (user.username == username) {
+			return true;
+		}
+	}
+	return false;
 }
 string create(string username, string password) {
+	if (!validateUsername(username)) {
+		return "Invalid username.";
+	}
+	if (!validatePassword(password)) {
+		return "Invalid password.";
+	}
+	if (existsByUsername(username)) {
+		return "User with the same email already exists.";
+	}
+	unsigned hashP = Hashing(password);
+	string hashedPassword = intToString(hashP);
+	UserData user = { username, hashedPassword, 0 };
+	users.push_back(user);
 
+	isLogged = true;
+	loggedUser = user;
+	return REGISTERED_SUCCESSFULLY_MESSAGE;
 }
 
 void logout() {
