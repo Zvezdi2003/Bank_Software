@@ -83,7 +83,10 @@ int main() {
 			transfer(user, depositSum);
 		}
 		else if (command == WITHDRAW_COMMAND) {
-			
+			double amountWithdraw = 0.0;
+			cout << "Please, enter how much money you want to withdraw: ";
+			cin >> amountWithdraw;
+			withdraw(amountWithdraw);
 		}
 	}
 	saveState();
