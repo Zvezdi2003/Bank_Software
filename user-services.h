@@ -296,7 +296,24 @@ void withdraw(double amount) {
 }
 
 bool saveState() {
-	
+	ofstream deleteData("users.txt");
+
+		if (!deleteData.is_open()) {
+			cout << "File did not open!" << '\n';
+			return false;
+		}
+
+		deleteData << "";
+
+		deleteData.close();
+
+		ofstream writeToFile("users.txt", ios::app);
+
+		for (auto& x : users) {
+			writeToFile << x.username << ':' << x.password << ':' << x.balance << '\n';
+		}
+
+		writeToFile.close();
 }
 
 #endif //ENCODINGPASSWORD_USER_SERVICES_H
