@@ -279,8 +279,22 @@ void transfer(string username, double amount) {
 }
 
 void withdraw(double amount) {
-
+	for (auto& x : users) {
+		if (x.username == loggedUser.username) {
+			if (abs(loggedUser.balance - amount) >= DBL_EPSILON && loggedUser.balance <= 10000)
+			{
+				loggedUser.balance -= amount;
+				x.balance -= amount;
+			}
+			else
+			{
+				cout << "Invalid withdraw amount" << endl;
+				return;
+			}
+		}
+	}
 }
+
 bool saveState() {
 	
 }
