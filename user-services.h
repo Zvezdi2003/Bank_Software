@@ -264,7 +264,18 @@ void deposit(double& amount) {
 }
 
 void transfer(string username, double amount) {
-
+	for (auto& x : users) {
+		if (username == x.username) {
+			if (amount > DBL_EPSILON && abs(amount - 10000) >= DBL_EPSILON && abs(loggedUser.balance - amount) >= DBL_EPSILON)
+			{
+				loggedUser.balance -= amount;
+				x.balance += amount;
+				cout << "The transfer is made successfully!" << '\n';
+				return;
+			}
+		}
+	}
+	cout << "User not found" << '\n';
 }
 
 void withdraw(double amount) {
