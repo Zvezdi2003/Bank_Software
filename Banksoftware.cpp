@@ -74,7 +74,13 @@ int main() {
 			deposit(amountOFMoney);
 		}
 		else if (command == TRANSFER_COMMAND) {
-			
+			string user;
+			cout << "Enter username to whom you would like to transfer: ";
+			cin >> user;
+			double depositSum;
+			cout << "Enter how much money you would like to transfer: ";
+			cin >> depositSum;
+			transfer(user, depositSum);
 		}
 		else if (command == WITHDRAW_COMMAND) {
 			
