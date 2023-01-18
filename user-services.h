@@ -33,22 +33,32 @@ double stringToDouble(string str)
 {
 	double number = 0;
 
+	bool isNegative = false;
+	if (str[0] == '-') {
+		isNegative = true;
+	}
+	
 	for (int i = 0; str[i] != '\0'; i++) {
 		if (str[i] == '.' || str[i] == ',') {
 			continue;
 		}
-		number = number * 10 + (str[i] - '0') * 10;
+		if (str[i] != '-') {
+			number = number * 10 + (str[i] - '0') * 10;
+		}
 	}
-	int digitsAfterComa = numbersAfterComma(str);
-	digitsAfterComa++;
+	int digitsAfterComma = numbersAfterComma(str);
+	digitsAfterComma++;
 
-	while (digitsAfterComa > 0) {
+	while (digitsAfterComma > 0) {
 		number /= 10;
-		digitsAfterComa--;
+		digitsAfterComma--;
 	}
-
+	
+	if (isNegative) {
+		return -number;
+	}
+	
 	return number;
-
 }
 
 void loadUsers() {
@@ -59,25 +69,25 @@ void loadUsers() {
 		return;
 	}
 
-	string current;
-	getline(file, current, ':');
+	string currentData;
+	getline(file, currentData, ':');
 
-	while (current != "\n" && !file.eof())
+	while (currentData != "\n" && !file.eof())
 	{
 
 		UserData user;
 
-		user.username = current;
+		user.username = currentData;
 
-		getline(file, current, ':');
-		user.password = current;
+		getline(file, currentData, ':');
+		user.password = currentData;
 
 		getline(file, current);
-		user.balance = stringToDouble(current);
+		user.balance = stringToDouble(currentData);
 
 		users.push_back(user);
 
-		getline(file, current, ':');
+		getline(file, currentData, ':');
 	}
 }
 
@@ -193,6 +203,7 @@ void login(string username, string password) {
 		{
 			isLogged = true;
 			loggedUser = user;
+			break;
 		}
 	}
 }
@@ -270,6 +281,21 @@ void transfer(string username, double amount) {
 			if (amount > DBL_EPSILON && abs(amount - 10000) >= DBL_EPSILON && abs(loggedUser.balance - amount) >= DBL_EPSILON)
 			{
 				loggedUser.balance -= amount;
+
+				if (!(10000 + loggedUser.balance >= DBL_EPSILON)) {
+					cout << "The overdraft has reached its limit of 10000!" << '\n';
+					loggedUser.balance = -10000;
+
+					for (auto& y : users) {
+						if (y.username == loggedUser.username) {
+							y.balance = loggedUser.balance;//setvam 10000
+							break;
+						}
+					}
+
+					return;
+				}
+
 				x.balance += amount;
 				cout << "The transfer is made successfully!" << '\n';
 				return;
@@ -282,9 +308,22 @@ void transfer(string username, double amount) {
 void withdraw(double amount) {
 	for (auto& x : users) {
 		if (x.username == loggedUser.username) {
-			if (abs(loggedUser.balance - amount) >= DBL_EPSILON && loggedUser.balance <= 10000)
+			if (abs(loggedUser.balance - amount) >= DBL_EPSILON)
 			{
 				loggedUser.balance -= amount;
+
+				if (!(10000 + loggedUser.balance >= DBL_EPSILON)) {
+					cout << "The overdraft has reached its limit of 10000!" << '\n';
+					loggedUser.balance = -10000;
+
+					for (auto& y : users) {
+						if (y.username == loggedUser.username) {
+							y.balance = loggedUser.balance;
+							break;
+						}
+					}
+					return;
+				}
 				x.balance -= amount;
 			}
 			else
