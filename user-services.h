@@ -231,6 +231,7 @@ void logout() {
 }
 void cancelAccount() {
 	string password;
+	cout << "Enter your password: ";
 	cin >> password;
 	if (isLogged && loggedUser.balance == 0)
 	{
