@@ -254,13 +254,17 @@ void cancelAccount() {
 			}
 		}
 	}
+	if (loggedUser.balance != 0)
+	{
+		cout << "You need to withdraw your money before canceling your account." << endl;
+	}
 	logout();
 }
 
 void deposit(double& amount) {
 	for (auto& x : users) {
 		if (x.username == loggedUser.username) {
-			if (amount > DBL_EPSILON)
+			if (amount > 0)
 			{
 				loggedUser.balance += amount;
 				x.balance += amount;
@@ -278,17 +282,17 @@ void deposit(double& amount) {
 void transfer(string username, double amount) {
 	for (auto& x : users) {
 		if (username == x.username) {
-			if (amount > DBL_EPSILON && abs(amount - 10000) >= DBL_EPSILON && abs(loggedUser.balance - amount) >= DBL_EPSILON)
+			if (amount > 0 && abs(amount - 10000) >= 0 && abs(loggedUser.balance - amount) >= 0)
 			{
 				loggedUser.balance -= amount;
 
-				if (!(10000 + loggedUser.balance >= DBL_EPSILON)) {
+				if (!(10000 + loggedUser.balance >= 0)) {
 					cout << "The overdraft has reached its limit of 10000!" << '\n';
 					loggedUser.balance = -10000;
 
 					for (auto& y : users) {
 						if (y.username == loggedUser.username) {
-							y.balance = loggedUser.balance;//setvam 10000
+							y.balance = loggedUser.balance;
 							break;
 						}
 					}
