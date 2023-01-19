@@ -253,6 +253,7 @@ void cancelAccount() {
 				break;
 			}
 		}
+		cout << CANCELED_SUCCESSFULLY_MESSAGE << endl;
 	}
 	if (loggedUser.balance != 0)
 	{
