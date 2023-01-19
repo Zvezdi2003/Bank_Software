@@ -15,5 +15,6 @@ const string TRANSFER_COMMAND = "T";
 const string WITHDRAW_COMMAND = "W";
 
 const string REGISTERED_SUCCESSFULLY_MESSAGE = "Registered successfully";
+const string CANCELED_SUCCESSFULLY_MESSAGE = "Canceled successfully";
 
 #endif //ENCODINGPASSWORD_GLOBAL_CONSTANTS_H
